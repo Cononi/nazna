@@ -1,9 +1,6 @@
 package io.github.cononi.core.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * With annotation this component for settings
@@ -11,7 +8,12 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Documented
 @Component
 public @interface Configuration {
+    /**
+     * The name of the configuration bean.
+     * If not specified, the bean name will be the name of the class with first letter lowercase.
+     */
     String value() default "";
 }

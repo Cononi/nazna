@@ -19,12 +19,11 @@ public class NaznaApplication {
         this.naznaContext = new NaznaContextFactory();
     }
 
-    public NaznaApplication run(Class<?> primarySource, String... args){
-
+    public NaznaApplication run(Class<?> primarySource, String... args) {
         NaznaServerApplication annotation = primarySource.getAnnotation(NaznaServerApplication.class);
 
         if (annotation == null) {
-            throw new RuntimeException("The primary source class must be annotated with @SimpleBootApplication");
+            throw new RuntimeException("The primary source class must be annotated with @NaznaServerApplication");
         }
 
         // 클래스패스 스캐닝 활성화 여부 확인
@@ -44,8 +43,22 @@ public class NaznaApplication {
             }
         }
 
+        // 모든 빈을 등록한 후 컨텍스트 초기화 (PostConstruct 메서드 호출)
+        naznaContext.initialize();
+
         System.out.println("Application started with " + naznaContext.getBeans().size() + " beans");
+
+        // 애플리케이션 종료 후크 등록 (PreDestroy 메서드 호출)
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Application shutting down...");
+            naznaContext.close();
+        }));
+
         return this;
+    }
+
+    public NaznaContext getContext() {
+        return naznaContext;
     }
 
     // 패키지 스캔 및 컴포넌트 등록
