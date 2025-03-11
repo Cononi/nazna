@@ -1,0 +1,5 @@
+rootProject.name = 'nazna'
+
+include ':core'
+include ':server'
+

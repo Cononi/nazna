@@ -1,0 +1,47 @@
+// Common All Project Settings (include Root)
+allprojects {
+    apply plugin: 'java'
+
+    group = 'io.github.cononi'
+    version = '1.0-SNAPSHOT'
+
+    // Common Jave Version
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    // Remotes Repository
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        // Test Library
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+    }
+
+    // Encoding Settings
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    // Test Settings
+    test {
+        useJUnitPlatform()
+    }
+
+
+}
+
+subprojects {
+
+}
+
+
+project(":server") {
+    dependencies {
+        implementation(project(':core'))
+    }
+}
